@@ -110,6 +110,7 @@
                 form = form
             } else {
                 await checkAuth()
+                router.goto('/')
             }
         }
     }
@@ -123,7 +124,7 @@
             label: 'Email',
             name: 'email',
             type: 'email',
-            placeholder: 'market@mail.ru',
+            placeholder: 'noothing@shorlty.tech',
             required: true,
             ref: null,
             form: true,
@@ -132,7 +133,7 @@
                 max: null,
                 fn: validateEmail
             },
-            value: 'test@mail.ru',
+            value: null,
             error: false
         },
         {
@@ -140,7 +141,7 @@
             label: 'Username',
             name: 'username',
             type: 'text',
-            placeholder: 'dangermaster_2007',
+            placeholder: 'shorlty_2022',
             required: true,
             ref: null,
             form: true,
@@ -149,7 +150,7 @@
                 max: null,
                 fn: validateUsername
             },
-            value: 'dangermaster',
+            value: null,
             error: false
         },
         {
@@ -166,7 +167,7 @@
                 max: null,
                 fn: validateText
             },
-            value: '1234567',
+            value: null,
             error: false
         },
         {
@@ -183,7 +184,7 @@
                 max: null,
                 fn: validateConfirm
             },
-            value: '1234567',
+            value: null,
             error: false
         }
     ]

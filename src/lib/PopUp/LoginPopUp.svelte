@@ -64,7 +64,7 @@
                 max: null,
                 fn: null
             },
-            value: 'dangermaster',
+            value: null,
             error: false
         },
         {
@@ -81,7 +81,7 @@
                 max: null,
                 fn: null
             },
-            value: '1234567',
+            value: null,
             error: false
         }
     ]
