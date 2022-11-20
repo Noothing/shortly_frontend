@@ -21,7 +21,8 @@
     /**
      * Set context
      */
-    const baseUrl = "https://api.shorlty.tech/"
+    const baseUrl = "http://localhost:32512"
+    // const baseUrl = "https://api.shorlty.tech/"
 
     const api = writable(
         axios.create({
@@ -57,6 +58,7 @@
 
     const logout = async () => {
         const {data: req} = await $api.get("/user/logout")
+        console.log(req)
         $isAuth = false
     }
 

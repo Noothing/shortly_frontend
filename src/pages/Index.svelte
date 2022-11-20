@@ -5,26 +5,27 @@
      */
     import Icon from "$lib/Core/Icon.svelte";
     import Button from "$lib/Buttons/Button.svelte";
-    import {getContext} from "svelte";
-    import DropDown from "$lib/Buttons/DropDown.svelte";
-    import {flip} from 'svelte/animate'
+    import {getContext, onMount} from "svelte";
+    import IconButton from "$lib/Buttons/IconButton.svelte";
+    import ToolTip from "$lib/Buttons/ToolTip.svelte";
+    import MainHeader from "$lib/Blocks/MainHeader.svelte";
+    import {router} from "tinro";
 
     /**
      * Get context
      */
     const isAuth = getContext("isAuth")
+    const {cutURL, URLs} = getContext("URL")
 
 
-    const checkUrl = (e) => {
-        if (e.target.value.length > 0) {
-            try {
-                error = !Boolean(new URL(e.target.value));
-            } catch (e) {
-                error = true
-            }
-        } else {
-            error = false
+    const checkUrl = (string) => {
+        let url;
+        try {
+            url = new URL(string);
+        } catch (_) {
+            return false;
         }
+        return url.protocol === "http:" || url.protocol === "https:";
     }
 
     let error = false
@@ -32,11 +33,207 @@
     let short = ''
 
     let center = true
+
+    let registrationPopUp = false
+    let loginPopUp = false
+
+    const openRegistration = () => {
+        loginPopUp = false
+        registrationPopUp = true
+    }
+
+    const openLogin = () => {
+        loginPopUp = true
+        registrationPopUp = false
+    }
+
+    let input
+    let loading = false
+
+    const cutUrl = async () => {
+        loading = true
+        const url = input.value
+        if (checkUrl(url)) {
+            const res = await cutURL(url)
+            loading = false
+        } else {
+            error = true
+            loading = false
+        }
+    }
+
+    const inputLogic = async (e) => {
+        if (e.key === 'Enter' || e.keyCode === 13) {
+            if (!loading) await cutUrl()
+        }
+    }
 </script>
 
-<h1> Test </h1>
+<MainHeader/>
+
+<main class="wrapper">
+
+    <div class="short__block">
+        <div class="short__input"
+             class:error={error}>
+            <input type="text"
+                   on:keyup={inputLogic}
+                   bind:this={input}
+                   disabled={loading}
+                   placeholder="https://shorlty.tech"/>
+            <Button primary={true}
+                    disabled={loading}
+                    on:click={cutUrl}>Cut
+            </Button>
+        </div>
+
+        {#if $URLs.length > 0}
+            <div class="short__last">
+                <a class="url__native" href="https://vk.com">
+                    {$URLs[0].url}
+                </a>
+
+                <div class="url__short">
+                    <a href="https://link.shorlty.tech/ABSDF">
+                        https://link.shorlty.tech/{$URLs[0].id}
+                    </a>
+                    {#if $isAuth}
+                        <IconButton icon="/icons/timeline.svg"
+                                    on:click={() => router.goto('/profile')}
+                                    icon_only={true}/>
+                    {:else}
+                        <ToolTip>
+                            <svelte:fragment slot="trigger">
+                                <Icon url="/icons/timeline.svg"
+                                      height="20px"
+                                      width="20px"/>
+                            </svelte:fragment>
+
+                            <svelte:fragment slot="text">
+                                You need to be authed for viewing more information
+                            </svelte:fragment>
+                        </ToolTip>
+                    {/if}
+                </div>
+            </div>
+        {/if}
+    </div>
+
+</main>
 
 <style lang="scss">
+  .url {
+	&__short {
+	  display: inline-flex;
+	  align-items: center;
+	  gap: 10px;
+
+	  a {
+		text-align: right;
+	  }
+
+	  :global(.button) {
+		height: 25px;
+		width: 25px;
+
+		padding: unset;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	  }
+
+	  :global(.button svg path) {
+		height: 25px;
+		width: 25px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		fill: var(--primary-text);
+	  }
+
+	  :global(.tooltip svg path) {
+		fill: var(--primary-text);
+	  }
+	}
+  }
+
+  .short {
+	&__last {
+	  display: grid;
+	  grid-template-columns: 1fr 1fr;
+	  grid-gap: 20px;
+	  width: 100%;
+
+	  a {
+		width: 100%;
+		max-width: 100%;
+
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+
+		color: var(--primary-text);
+		font-size: 14px;
+		line-height: 18px;
+		text-decoration: none;
+
+		&:hover {
+		  color: var(--main-color);
+		}
+	  }
+	}
+
+	&__block {
+	  position: absolute;
+	  top: 50%;
+	  left: 50%;
+
+	  transform: translate(-50%, -50%);
+
+	  width: 55vw;
+	  min-width: 32rem;
+	  max-width: 54rem;
+
+	  display: flex;
+	  flex-direction: column;
+	  gap: 15px;
+	}
+
+	&__input {
+	  width: 100%;
+	  height: 2.8rem;
+	  display: inline-flex;
+	  align-items: center;
+
+	  border: 2px solid var(--main-color);
+	  border-radius: 8px;
+
+      overflow: hidden;
+
+      &.error {
+        border-color: var(--warning-text);
+      }
+
+	  input {
+		padding: 0 2rem 0 .8rem;
+		margin: unset;
+		background: unset;
+		border: unset;
+		outline: none;
+		flex-grow: 1;
+
+		color: var(--primary-text);
+		font-size: 16px;
+		line-height: 18px;
+	  }
+
+	  :global(.button.primary) {
+		border-radius: unset;
+	  }
+	}
+  }
+
   .wrapper {
 	display: flex;
 	height: 100%;
@@ -192,37 +389,4 @@
 	}
   }
 
-  .header {
-	position: fixed;
-	left: 0;
-	right: 0;
-	top: 0;
-
-	display: inline-flex;
-	align-items: center;
-	justify-content: space-between;
-
-	width: 100%;
-	padding: 28px 34px 0;
-  }
-
-  .user {
-	height: 50px;
-	width: 50px;
-	border-radius: 50px;
-	overflow: hidden;
-
-	border: 1px solid #5A31FF;
-	cursor: pointer;
-
-	img {
-	  height: 100%;
-	  width: 100%;
-	}
-  }
-
-  .logo {
-	height: 50px;
-	width: 50px;
-  }
 </style>

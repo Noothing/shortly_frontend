@@ -11,7 +11,8 @@
         primary = false,
         secondary = false,
         main = false,
-        icon = false
+        icon = false,
+        icon_only = false
 
 
 </script>
@@ -24,10 +25,12 @@
        class:icon
        class:disabled
        class:main>
-        <Icon url="/public/close.svg"
+        <Icon url={icon}
               height="20px"
               width="20px"/>
-        <span><slot/></span>
+        {#if !icon_only}
+            <span><slot/></span>
+        {/if}
     </a>
 {:else}
     <button class="button"
@@ -37,10 +40,12 @@
             class:disabled
             class:main
             on:click|preventDefault|stopPropagation>
-        <Icon url="/public/close.svg"
+        <Icon url={icon}
               height="20px"
               width="20px"/>
-        <span><slot/></span>
+        {#if !icon_only}
+            <span><slot/></span>
+        {/if}
     </button>
 {/if}
 
@@ -67,7 +72,7 @@
 
 	white-space: nowrap;
 
-    background: transparent;
+	background: transparent;
 
 	&.primary {
 	  color: var(--primary-button-text);
@@ -88,6 +93,38 @@
 
 		background: var(--primary-button-disabled);
 		color: var(--primary-button-text-disabled);
+	  }
+	}
+
+	&.secondary {
+	  color: var(--primary-text);
+	  background: var(--secondary-button);
+
+	  &:not(.disabled) {
+		&:hover {
+		  background: var(--secondary-button-hover);
+		  color: black;
+
+		  :global(svg path) {
+			fill: black;
+		  }
+		}
+
+		&:active, &.active {
+		  background: var(--secondary-button-active);
+		  color: var(--primary-text);
+
+		  :global(svg path) {
+			fill: var(--primary-text);
+		  }
+		}
+	  }
+
+	  &.disabled {
+		cursor: default;
+
+		background: var(--secondary-button-hover);
+		color: var(--primary-text);
 	  }
 	}
   }

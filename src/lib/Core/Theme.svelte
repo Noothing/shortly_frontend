@@ -25,7 +25,9 @@
      */
 
     const setTheme = () => {
+        console.log($theme)
         switch ($theme) {
+            case '':
             case null:
                 document.body.classList.contains('light') && document.body.classList.remove('light')
                 document.body.classList.contains('dark') && document.body.classList.remove('dark')
@@ -70,15 +72,16 @@
   }
 
   html {
-    height: 100%;
+	height: 100%;
   }
 
   body {
 	height: 100%;
 	background: var(--layout-bg);
+	--main-color: #5A31FF;
 
 	&.dark {
-      --main-color: #5A31FF;
+	  --stroke-def: #343434;
 
 	  --layout-bg: #161617;
 
@@ -88,21 +91,27 @@
 	  --secondary-text: rgba(255, 255, 255, .45);
 	  --secondary-text-hover: rgba(255, 255, 255, .6);
 
-      --warning-text: #DC2626;
+	  --warning-text: #DC2626;
 
-      --primary-button: #93C5FD;
-      --primary-button-hover: #60A5FA;
-      --primary-button-active: #1E3A8A;
-      --primary-button-disabled: #5B21B6;
+	  --primary-button: #93C5FD;
+	  --primary-button-hover: #60A5FA;
+	  --primary-button-active: #1E3A8A;
+	  --primary-button-disabled: #5B21B6;
 
-      --primary-button-text: #000000;
-      --primary-button-text-disabled: #000000;
+	  --primary-button-text: #000000;
+	  --primary-button-text-disabled: #000000;
 
-      --modal-bg: #232325;
-      --modal-item-hover: #475569;
+	  --secondary-button: #1E293B;
+	  --secondary-button-hover: #93C5FD;
+	  --secondary-button-active: #C7D2FE;
+
+	  --modal-bg: #232325;
+	  --modal-item-hover: #475569;
 	}
 
 	&.light {
+	  --stroke-def: #D7D7D7;
+
 	  --main-color: #5A31FF;
 
 	  --layout-bg: #FFFFFF;
@@ -113,7 +122,7 @@
 	  --secondary-text: rgba(255, 255, 255, .45);
 	  --secondary-text-hover: rgba(255, 255, 255, .6);
 
-      --warning-text: #DC2626;
+	  --warning-text: #DC2626;
 
 	  --primary-button: #93C5FD;
 	  --primary-button-hover: #DBEAFE;
@@ -122,6 +131,10 @@
 
 	  --primary-button-text: #000000;
 	  --primary-button-text-disabled: #000000;
+
+	  --secondary-button: #E2E8F0;
+	  --secondary-button-hover: #2563EB;
+	  --secondary-button-active: #93C5FD;
 
 	  --modal-bg: #fff;
 	  --modal-item-hover: #475569;

@@ -2910,13 +2910,14 @@ export const fnBrowserDetect = () => {
     return browserName
 }
 
-export function clickOutside(node) {
+export function clickOutside(node, fn) {
 
     const handleClick = event => {
         if (node && !node.contains(event.target) && !event.defaultPrevented) {
-            node.dispatchEvent(
-                new CustomEvent('click_outside', node)
-            )
+            // node.dispatchEvent(
+            //     new CustomEvent('click_outside', node)
+            // )
+            fn()
         }
     }
 
