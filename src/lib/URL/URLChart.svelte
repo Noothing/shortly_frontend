@@ -14,9 +14,9 @@
 
     const createChart = () => {
         const labels = Object.keys(transition);
-        info = Object.values(transition).map(e => e.length).reverse()
+        info = Object.values(transition).map(e => e.length)
         data = {
-            labels: labels.reverse(),
+            labels: labels,
             datasets: [{
                 label: 'Transitions',
                 data: info,

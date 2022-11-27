@@ -36,8 +36,10 @@
 
     const onBlur = async (e) => {
         if (required) {
-            if (e.target.value.length > 0) error = await validation(e.target.value, min)
-            console.log(error)
+            if (e.target.value.length > 0 && typeof validation == "function") {
+                error = await validation(e.target.value, min)
+                console.log(error)
+            }
         }
     }
 
@@ -78,11 +80,11 @@
 	gap: 5px;
 	width: 100%;
 
-    &__error {
-      font-size: 12px;
-      font-weight: 300;
-      color: var(--warning-text);
-    }
+	&__error {
+	  font-size: 12px;
+	  font-weight: 300;
+	  color: var(--warning-text);
+	}
 
 	&__label {
 	  font-size: 14px;

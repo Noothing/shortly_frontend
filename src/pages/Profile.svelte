@@ -9,6 +9,11 @@
     import {router, meta} from 'tinro';
 
     /**
+     * Get context
+     */
+    const isAuth = getContext("isAuth")
+
+    /**
      * Components
      */
     import Links from "$lib/Links/Links.svelte";
@@ -50,6 +55,10 @@
     onMount(() => {
         setHash($route.query.page)
     })
+
+    $: if (!$isAuth) {
+        router.goto('/')
+    }
 </script>
 
 <div class="wrapper">

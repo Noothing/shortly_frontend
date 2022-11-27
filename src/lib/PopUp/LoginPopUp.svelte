@@ -31,24 +31,37 @@
         const data = {}
 
         form.forEach(field => data[field.name] = field.value)
+        globalError = null
 
-        const {data: req} = await $api.post('/user/auth', data)
+        try {
+            const {data: req} = await $api.post('/user/auth', data)
 
-        if (req.success) {
-            isOpen = false
-            checkAuth()
-        } else {
-            req.error.errored.forEach((field) => {
-                form[field].error = req.error.text
-            })
+            if (req.success) {
+                isOpen = false
+                checkAuth()
+            } else {
+                console.log(req)
+                req.error.errored.forEach((field) => {
+                    form[field].error = req.error.text
+                })
 
-            form = form
+                form = form
+            }
+        } catch (e) {
+            const error = e.response.data.error
+            if (error) {
+                globalError = error
+            } else {
+                console.log(e)
+            }
         }
     }
 
     /**
      * Variables
      */
+    let globalError = null
+
     let form = [
         {
             id: 1,
@@ -109,6 +122,12 @@
         {/each}
     </div>
 
+    {#if globalError}
+        <div class="popup__error">
+            Error: {globalError}
+        </div>
+    {/if}
+
     <div class="popup__footer">
         <Button primary={true}
                 disabled={form.find(e => (e.value ?? '').length === 0) || form.find(e => e.error)}
@@ -129,11 +148,19 @@
 	text-align: center;
   }
 
+  .popup__error {
+    color: var(--warning-text);
+    text-align: center;
+    width: 100%;
+    padding: 10px 0;
+    margin-bottom: 20px;
+  }
+
   .popup__body {
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 	margin-bottom: 20px;
-    gap: 15px;
+	gap: 15px;
   }
 
   .popup__footer {

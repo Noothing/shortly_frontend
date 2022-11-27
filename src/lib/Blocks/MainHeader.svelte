@@ -74,8 +74,8 @@
 <header class="header">
     <div class="logo">
         <Icon url="/icons/logo.svg"
-              height="60px"
-              width="60px"/>
+              height="48px"
+              width="48px"/>
     </div>
 
     {#if $isAuth}
@@ -126,29 +126,12 @@
   }
 
   .user {
-	height: 50px;
-	width: 50px;
+	height: 45px;
+	width: 45px;
 	border-radius: 50px;
-
-	border: 2px solid white;
 	cursor: pointer;
 
 	position: relative;
-
-	&:before {
-	  height: 55px;
-	  width: 55px;
-	  border-radius: 50px;
-	  position: absolute;
-	  z-index: -1;
-	  left: 50%;
-	  top: 50%;
-	  transform: translate(-50%, -50%);
-	  background: #5A31FF;
-
-
-	  content: '';
-	}
 
 	img {
 	  height: 100%;
@@ -159,7 +142,7 @@
   }
 
   .logo {
-	height: 50px;
-	width: 50px;
+	height: 48px;
+	width: 48px;
   }
 </style>

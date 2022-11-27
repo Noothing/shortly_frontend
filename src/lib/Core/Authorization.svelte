@@ -21,8 +21,8 @@
     /**
      * Set context
      */
-    // const baseUrl = "http://localhost:32512"
-    const baseUrl = "https://api.shorlty.tech/"
+    const baseUrl = "http://localhost:32512"
+    // const baseUrl = "https://api.shorlty.tech/"
 
     const api = writable(
         axios.create({

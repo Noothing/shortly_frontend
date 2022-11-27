@@ -99,7 +99,10 @@
                 {/each}
             </div>
         {:else}
-            <p class="placeholder">Too low data</p>
+            <div class="no-data">
+                <p class="placeholder">Too low data</p>
+                <span class="description">You need to short 5 or more link</span>
+            </div>
         {/if}
     </div>
 
@@ -109,7 +112,10 @@
             {#if $URLs.length >= 5}
                 <DashBoardPieChart transition={city}/>
             {:else}
-                <p class="placeholder">Too low data</p>
+                <div class="no-data">
+                    <p class="placeholder">Too low data</p>
+                    <span class="description">You need to short 5 or more link</span>
+                </div>
             {/if}
         </div>
     {/if}
@@ -120,7 +126,10 @@
             {#if $URLs.length >= 5}
                 <DashBoardPieChart transition={platform}/>
             {:else}
-                <p class="placeholder">Too low data</p>
+                <div class="no-data">
+                    <p class="placeholder">Too low data</p>
+                    <span class="description">You need to short 5 or more link</span>
+                </div>
             {/if}
         </div>
     {/if}
@@ -131,13 +140,37 @@
             {#if $URLs.length >= 5}
                 <DashBoardPieChart transition={user_agents}/>
             {:else}
-                <p class="placeholder">Too low data</p>
+                <div class="no-data">
+                    <p class="placeholder">Too low data</p>
+                    <span class="description">You need to short 5 or more link</span>
+                </div>
             {/if}
         </div>
     {/if}
 </div>
 
 <style lang="scss">
+  .no-data {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	.placeholder {
+	  color: var(--primary-text);
+	  font-size: 20px;
+	}
+
+    .description {
+      color: var(--secondary-text);
+    }
+  }
+
   .information {
 	&__block {
 	  display: inline-flex;
@@ -178,7 +211,7 @@
 
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-    grid-template-rows: 150px;
+	grid-template-rows: 150px;
 	gap: 25px;
 
 	&__block {
@@ -198,7 +231,7 @@
 		grid-column-start: 1;
 		grid-column-end: 3;
 
-        height: 150px;
+		height: 150px;
 	  }
 
 	  &.row {
@@ -210,16 +243,6 @@
 		color: var(--primary-text);
 
 		margin-bottom: 25px;
-	  }
-
-	  p {
-		position: absolute;
-		left: 50%;
-		top: 50%;
-		transform: translate(-50%, -50%);
-
-		color: var(--primary-text);
-		font-size: 20px;
 	  }
 
 	  &-list {

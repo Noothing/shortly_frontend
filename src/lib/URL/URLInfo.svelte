@@ -31,23 +31,38 @@
      * Functions
      */
     const getMoreInfo = async () => {
+        Date.prototype.addDays = function (days) {
+            var date = new Date(this.valueOf());
+            date.setDate(date.getDate() + days);
+            return date;
+        }
+
+        function getDates(startDate, stopDate) {
+            var dateArray = new Array();
+            var currentDate = startDate;
+            while (currentDate <= stopDate) {
+                dateArray[new Date(currentDate).toLocaleDateString()] = [];
+                currentDate = currentDate.addDays(1);
+            }
+            return dateArray;
+        }
+
+
         let data = await getInfo(url.id)
-        data.url_transitions = groupArrays(data.url_transitions)
+        const dates = getDates(new Date(data.date_added), Date.now())
+
+        data.url_transitions = groupArrays(data.url_transitions, dates)
         return data
     }
 
     // Edit: to add it in the array format instead
-    const groupArrays = (data) => {
-        return data.reduce((groups, game) => {
-            const date = game.date_added.split('T')[0];
-            if (!groups[date]) {
-                groups[date] = [];
-            }
-            groups[date].push(game);
-            return groups;
-        }, {});
-    }
+    const groupArrays = (data, dates) => {
+        data.forEach(e => {
+            dates[new Date(e.date_added).toLocaleDateString()].push(e)
+        })
 
+        return dates
+    }
 </script>
 
 <div class="link__information">
@@ -73,7 +88,7 @@
 
         {#if url.transitions > 0}
             {#await getMoreInfo()}
-                wait
+                <span class="placeholder">Loading data...</span>
             {:then moreInfo}
                 <URLChart transition={moreInfo.url_transitions}/>
             {/await}
@@ -82,6 +97,10 @@
 </div>
 
 <style lang="scss">
+  .placeholder {
+    color: var(--primary-text);
+  }
+
   .link {
 
 	&__information {

@@ -23,10 +23,13 @@
             const {data: res} = await $api.get('/url')
             $URLs = res.data.urls
         } else {
-            try {
-                $URLs = [...JSON.parse(getCookie("urls"))]
-            }catch (e) {
-                console.log(e)
+            const cookie = getCookie("urls")
+            if (cookie) {
+                try {
+                    $URLs = [...JSON.parse(getCookie("urls"))]
+                } catch (e) {
+                    console.log(e)
+                }
             }
         }
     }

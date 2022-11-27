@@ -1,6 +1,7 @@
 <script>
 
     import Icon from "$lib/Core/Icon.svelte";
+    import {fly} from "svelte/transition"
     import {writable} from "svelte/store";
     import {setContext} from "svelte";
     import {clickOutside} from "$lib/utils/index.js";
@@ -43,7 +44,6 @@
      * Functions
      */
     const dropdownHandler = () => {
-        console.log('click')
         $isOpen = !$isOpen
     }
 
@@ -67,6 +67,8 @@
 
     {#if $isOpen}
         <div class="dropdown__wrapper"
+             in:fly={{y: 10, duration: 100}}
+             out:fly={{y: 10, duration: 100}}
              use:clickOutside={dropdownHandler}>
             {#each items as item, itemIndex (item.id)}
                 <div class="dropdown__item">
